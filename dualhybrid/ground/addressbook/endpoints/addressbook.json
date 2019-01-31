@@ -1,0 +1,129 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Address Book API",
+    "version": "1.0",
+    "description": "API for searching the address book."
+  },
+  "host": "localhost",
+  "paths": {
+    "/contact": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "The contacts found",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/contact"
+              }
+            },
+            "examples": {
+              "application/json": [
+                {
+                  "firstname": "sunt aliquip non dolor",
+                  "surname": "ut velit",
+                  "email": "dolore cupidatat ut",
+                  "address": {
+                    "street": "fugiat nulla adipisicing Lorem in",
+                    "city": "aliquip eiusmod non amet elit",
+                    "state": "sit esse exercit",
+                    "country": "",
+                    "zip": "culpa"
+                  }
+                },
+                {
+                  "firstname": "anim labore exercitati",
+                  "surname": "voluptate",
+                  "email": "dolore mollit Lorem eiusmod",
+                  "address": {
+                    "street": "dolore ci",
+                    "city": "Lorem officia dolor anim",
+                    "state": "nostrud anim commo",
+                    "country": "aliquip ad",
+                    "zip": "com"
+                  }
+                }
+              ]
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        },
+        "summary": "Find contacts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "firstname",
+            "type": "string",
+            "description": "The contacts firstname."
+          },
+          {
+            "in": "query",
+            "name": "surname",
+            "type": "string",
+            "description": "The contacts surname."
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "type": "string",
+            "description": "The users email address."
+          }
+        ],
+        "x-flow": "addressbook-getContact"
+      }
+    }
+  },
+  "basePath": "/addressbook",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "definitions": {
+    "address": {
+      "type": "object",
+      "title": "address",
+      "description": "An address",
+      "properties": {
+        "street": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "string"
+        }
+      }
+    },
+    "contact": {
+      "type": "object",
+      "title": "contact",
+      "description": "Contact",
+      "properties": {
+        "firstname": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "address": {
+          "$ref": "#/definitions/address"
+        }
+      }
+    }
+  }
+}

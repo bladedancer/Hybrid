@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "4",
+  "info": {
+    "name": "mongocontacts-delete"
+  },
+  "parameter": {
+    "properties": {
+      "params": {
+        "type": "object",
+        "description": "The parameters from the endpoint.",
+        "properties": {
+          "id": {
+            "description": "The mongo/contacts ID",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "request": {
+        "type": "object",
+        "description": "The HTTP request."
+      },
+      "config": {
+        "type": "object",
+        "description": "The service's configuration"
+      },
+      "env": {
+        "type": "object",
+        "description": "The host OS environment"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "params",
+      "request",
+      "config",
+      "env"
+    ]
+  },
+  "start": "model.delete",
+  "nodes": {
+    "model.delete": {
+      "type": "nodehandler://api-builder-flow-invoke/model/mongo/contacts",
+      "method": "delete",
+      "name": "Delete contacts",
+      "parameters": [
+        {
+          "name": "id",
+          "value": "$.params.id"
+        }
+      ],
+      "outputs": {
+        "next": {
+          "context": "$.delete",
+          "routes": [
+            "response.success"
+          ]
+        },
+        "notfound": {
+          "routes": [
+            "response.error.notfound"
+          ]
+        }
+      }
+    },
+    "response.success": {
+      "type": "nodehandler://axway-flow/http",
+      "name": "Set success response",
+      "method": "setresponse",
+      "parameters": [
+        {
+          "name": "status",
+          "value": "204",
+          "type": "number"
+        }
+      ],
+      "outputs": {
+        "next": {
+          "context": "$.response"
+        }
+      }
+    },
+    "response.error.notfound": {
+      "type": "nodehandler://axway-flow/http",
+      "name": "Set not found response",
+      "method": "setresponse",
+      "parameters": [
+        {
+          "name": "status",
+          "value": "404",
+          "type": "number"
+        }
+      ],
+      "outputs": {
+        "next": {
+          "context": "$.response"
+        }
+      }
+    }
+  }
+}

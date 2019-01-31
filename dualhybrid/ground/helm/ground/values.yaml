@@ -1,0 +1,28 @@
+namespace: ground
+
+db:
+  name: addressbook
+  username: apibuilder
+  password: apibuilder
+  image: 
+    repository: bladedancer/addressbookdb
+    tag: latest
+    pullPolicy: IfNotPresent
+
+addressbook:
+  replicaCount: 1
+  port: 80
+  security: none
+  image: 
+    repository: bladedancer/addressbook
+    tag: latest
+    pullPolicy: IfNotPresent
+
+addressbookcrud:
+  replicaCount: 1
+  port: 80
+  security: none
+  image: 
+    repository: bladedancer/addressbookcrud
+    tag: latest
+    pullPolicy: IfNotPresent

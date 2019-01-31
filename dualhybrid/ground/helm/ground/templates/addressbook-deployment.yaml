@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addressbook
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Chart.Name }}-addressbook
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.addressbook.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-addressbook
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-addressbook
+    spec:
+      initContainers:
+      - name: init-addressbook
+        image: busybox
+        command: ['sh', '-c', 'until nc -w 3 -v addressbookdb.{{ .Values.namespace }} 27017; do echo waiting for database; sleep 2; done;']
+      containers:
+      - name: addressbook
+        image: "{{ .Values.addressbook.image.repository }}:{{ .Values.addressbook.image.tag }}"
+        imagePullPolicy: {{ .Values.addressbook.image.pullPolicy }}
+        env:
+          - name: SECURITY
+            value: {{ .Values.addressbook.security }}
+          - name: DB_NAME
+            value: addressbook
+          - name: DB_USER
+            value: {{ .Values.db.username }}
+          - name: DB_PASSWORD
+            value: {{ .Values.db.password }}
+          - name: DB_HOST
+            value: addressbookdb.{{ .Values.namespace }}
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /apibuilderPing.json
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /apibuilderPing.json
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 30

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addressbookdb
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Chart.Name }}-addressbookdb
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-addressbookdb
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-addressbookdb
+    spec:
+      containers:
+      - name: addressbookdb
+        image: "{{ .Values.db.image.repository }}:{{ .Values.db.image.tag }}"
+        imagePullPolicy: {{ .Values.db.image.pullPolicy }}
+        env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: {{ .Values.db.username }}
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            value: {{ .Values.db.password }}
+        ports:
+        - containerPort: 27017
+          protocol: TCP
+        readinessProbe:
+          tcpSocket:
+            port: 27017
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 27017
+          initialDelaySeconds: 20
+          periodSeconds: 20

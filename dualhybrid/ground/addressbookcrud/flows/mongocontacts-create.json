@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "4",
+  "info": {
+    "name": "mongocontacts-create"
+  },
+  "parameter": {
+    "properties": {
+      "params": {
+        "type": "object",
+        "description": "The parameters from the endpoint.",
+        "properties": {
+          "data": {
+            "$ref": "schema:///model/mongo/contacts",
+            "description": "The mongo/contacts to create"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "request": {
+        "type": "object",
+        "description": "The HTTP request."
+      },
+      "config": {
+        "type": "object",
+        "description": "The service's configuration"
+      },
+      "env": {
+        "type": "object",
+        "description": "The host OS environment"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "params",
+      "request",
+      "config",
+      "env"
+    ]
+  },
+  "start": "model.create",
+  "nodes": {
+    "model.create": {
+      "type": "nodehandler://api-builder-flow-invoke/model/mongo/contacts",
+      "method": "create",
+      "name": "Create contacts",
+      "parameters": [
+        {
+          "name": "data",
+          "value": "$.params.data"
+        }
+      ],
+      "outputs": {
+        "next": {
+          "context": "$.model",
+          "routes": [
+            "set.headers.location"
+          ]
+        }
+      }
+    },
+    "set.headers.location": {
+      "type": "nodehandler://@axway/api-builder-plugin-fn-dot/doT",
+      "name": "Set Headers",
+      "method": "formatObj",
+      "parameters": [
+        {
+          "name": "data",
+          "type": "jsonpath",
+          "value": "$.model"
+        },
+        {
+          "name": "template",
+          "type": "string",
+          "value": "\"{\\n  \\\"location\\\": {{=JSON.stringify(it[\\\"id\\\"] || null)}}\\n}\""
+        }
+      ],
+      "outputs": {
+        "next": {
+          "routes": [
+            "response.success"
+          ],
+          "context": "$.headers"
+        },
+        "error": {
+          "routes": [
+            "response.error"
+          ],
+          "context": "$.error"
+        }
+      }
+    },
+    "response.success": {
+      "type": "nodehandler://axway-flow/http",
+      "name": "Set success response",
+      "method": "setresponse",
+      "parameters": [
+        {
+          "name": "status",
+          "value": "201",
+          "type": "number"
+        },
+        {
+          "name": "headers",
+          "value": "$.headers"
+        }
+      ],
+      "outputs": {
+        "next": {
+          "context": "$.response"
+        }
+      }
+    },
+    "response.error": {
+      "type": "nodehandler://axway-flow/http",
+      "name": "Set HTTP Response",
+      "method": "setresponse",
+      "parameters": [
+        {
+          "name": "status",
+          "type": "number",
+          "value": "400"
+        }
+      ],
+      "outputs": {
+        "next": {
+          "context": "$.response",
+          "routes": []
+        }
+      }
+    }
+  }
+}
