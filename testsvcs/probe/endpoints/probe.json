@@ -1,0 +1,49 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Probe Service API",
+    "version": "1.0",
+    "description": "Helper to probe mesh",
+    "contact": {
+      "name": "gmatthews"
+    }
+  },
+  "host": "example.com",
+  "paths": {
+    "/get": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        },
+        "operationId": "Getter",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "url",
+            "type": "string"
+          }
+        ],
+        "summary": "Get the specified url.",
+        "description": "Get",
+        "tags": [
+          "get"
+        ],
+        "x-flow": "probe-Getter"
+      }
+    }
+  },
+  "schemes": [
+    "http"
+  ],
+  "tags": [
+    {
+      "name": "get"
+    }
+  ]
+}

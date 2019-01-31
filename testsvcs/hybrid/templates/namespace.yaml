@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.namespace.app }}
+  labels:
+    name: {{ .Values.namespace.app }}
+    app: {{ .Chart.Name }}
+    istio-injection: enabled
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello
+  namespace: {{ .Values.namespace.app }}
+  labels:
+    app: {{ .Chart.Name }}-greet
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-greet
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-greet
+    spec:
+      containers:
+      - name: greet
+        image: bladedancer/greet:3.1.0
+        env:
+          - name: GREETING
+            value: Hello
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /apibuilderPing.json
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 30

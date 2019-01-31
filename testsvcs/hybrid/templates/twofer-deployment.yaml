@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twofer
+  namespace: {{ .Values.namespace.app }}
+  labels:
+    app: {{ .Chart.Name }}-twofer
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-twofer
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-twofer
+    spec:
+      containers:
+      - name: probe
+        image: bladedancer/twofer:1.0.0
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /apibuilderPing.json
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 30
