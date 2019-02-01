@@ -1,0 +1,47 @@
+{{ if .Values.deploy.messaging }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: messaging
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Chart.Name }}-messaging
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.messaging.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-messaging
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-messaging
+    spec:
+      containers:
+      - name: messaging
+        image: "{{ .Values.messaging.image.repository }}:{{ .Values.messaging.image.tag }}"
+        imagePullPolicy: {{ .Values.messaging.image.pullPolicy }}
+        env:
+          - name: SECURITY
+            value: {{ .Values.messaging.security }}
+          - name: APIKEY
+            value: {{ .Values.messaging.apikey }}
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /apibuilderPing.json
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /apibuilderPing.json
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 30
+{{ end }}

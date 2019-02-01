@@ -1,0 +1,16 @@
+namespace: cloud
+
+ground:
+  url: addressbook
+  apikey: giMbopxrImfNs9Y7Hlv6jwTLDxahoiyJ
+
+messaging:
+  replicaCount: 1
+  port: 80
+  security: none
+  apikey: none
+  image: 
+    repository: bladedancer/messaging
+    tag: latest
+    pullPolicy: IfNotPresent
+

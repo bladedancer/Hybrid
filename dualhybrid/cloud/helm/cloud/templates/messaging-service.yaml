@@ -1,0 +1,21 @@
+{{ if .Values.deploy.messaging }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: messaging
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Chart.Name }}-messaging
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    apic-managed: "true"
+spec:
+  selector:
+    app: {{ .Chart.Name }}-messaging
+  ports:
+  - port: {{ .Values.messaging.port }}
+    targetPort: 8080
+    protocol: TCP
+    name: messaging-port
+{{ end }}
