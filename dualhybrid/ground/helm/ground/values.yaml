@@ -26,3 +26,8 @@ addressbookcrud:
     repository: bladedancer/addressbookcrud
     tag: latest
     pullPolicy: IfNotPresent
+
+deploy:
+  db: true
+  addressbook: true
+  addressbookcrud: true
