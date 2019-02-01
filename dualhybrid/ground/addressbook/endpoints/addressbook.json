@@ -48,7 +48,7 @@
             }
           },
           "default": {
-            "description": ""
+            "description": "The default response."
           }
         },
         "summary": "Find contacts",
