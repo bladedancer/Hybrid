@@ -1,4 +1,3 @@
-{{ if .Values.deploy.messaging }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -28,6 +27,22 @@ spec:
             value: {{ .Values.messaging.security }}
           - name: APIKEY
             value: {{ .Values.messaging.apikey }}
+          - name: GROUND_PROTOCOL
+            value: {{ .Values.ground.scheme }}
+          - name: GROUND_HOSTNAME
+            value: {{ .Values.ground.host }}
+          - name: GROUND_PORT
+            value: "{{ .Values.ground.port }}"
+          - name: GROUND_BASEPATH
+            value: "{{ .Values.ground.basePath }}"
+          - name: GMAIL_TOKEN
+            value: {{ .Values.gmail.token }}
+          - name: GMAIL_CLIENT_ID
+            value: {{ .Values.gmail.clientId }}
+          - name: GMAIL_CLIENT_SECRET
+            value: {{ .Values.gmail.clientSecret }}
+          - name: GOOGLE_APIKEY
+            value: {{ .Values.google.apikey }}
         ports:
         - containerPort: 8080
           protocol: TCP
@@ -44,4 +59,3 @@ spec:
             port: 8080
           initialDelaySeconds: 30
           periodSeconds: 30
-{{ end }}

@@ -23,7 +23,7 @@ module.exports = {
 	baseurl: 'http://localhost',
 
 	// This is the port the service will be bound to
-	port: 8080,
+	port: process.env.PORT || 8080,
 
 	// Enabling this property will print out the process.env at startup time
 	printEnvVars: false,
@@ -66,7 +66,7 @@ module.exports = {
 	// If you wish any path that is not bound to `apiPrefix` to be accessible without
 	// authentication, then you can explicitly add them to `public` paths.
 	accessControl: {
-		apiPrefixSecurity: 'basic', // none | basic | apikey | ldap | plugin
+		apiPrefixSecurity: process.env.SECURITY || 'basic', // none | basic | apikey | ldap | plugin
 		public: []
 	},
 
@@ -126,6 +126,7 @@ module.exports = {
 
 	// Cross-Origin Resource Sharing settings
 	cors: {
+		'Access-Control-Allow-Origin': '*'
 		// List of allowed origins (format: any, space separated string, array or regex)
 		// 'Access-Control-Allow-Origin': '*' or 'http://foo.com http://bar.com' or ['http://foo.com', 'http://bar.com'] or /foo\.com$/,
 

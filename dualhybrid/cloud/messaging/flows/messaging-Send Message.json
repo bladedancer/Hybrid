@@ -343,13 +343,13 @@
 					]
 				},
 				"default": {
-					"context": "$.error",
+					"context": "$.grounderror",
 					"routes": [
 						"gm-code.3"
 					]
 				},
 				"error": {
-					"context": "$.error",
+					"context": "$.grounderror",
 					"routes": [
 						"gm-code.3"
 					]
@@ -369,7 +369,7 @@
 				{
 					"name": "function",
 					"type": "string",
-					"value": "\"(err) => {\\nconsole.error(err.message || err)\\n}\""
+					"value": "\"(err) => {\\nconsole.error(err && (err.message || err))\\n}\""
 				}
 			],
 			"outputs": {

@@ -1,9 +1,5 @@
 namespace: cloud
 
-ground:
-  url: addressbook
-  apikey: giMbopxrImfNs9Y7Hlv6jwTLDxahoiyJ
-
 messaging:
   replicaCount: 1
   port: 80
@@ -12,5 +8,18 @@ messaging:
   image: 
     repository: bladedancer/messaging
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
+ground:
+  scheme: https
+  host: yourhost
+  port: 443
+  basePath: /api
+
+gmail:
+  token: yourGmailRefreshToken
+  clientId: yourClientId
+  clientSecret: yourClientSecret
+
+google:
+  apikey: yourgoogleapikey
