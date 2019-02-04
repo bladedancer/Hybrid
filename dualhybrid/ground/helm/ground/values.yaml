@@ -7,7 +7,7 @@ db:
   image: 
     repository: bladedancer/addressbookdb
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
 addressbook:
   replicaCount: 1
@@ -16,7 +16,7 @@ addressbook:
   image: 
     repository: bladedancer/addressbook
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
 addressbookcrud:
   replicaCount: 1
@@ -25,7 +25,7 @@ addressbookcrud:
   image: 
     repository: bladedancer/addressbookcrud
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
 deploy:
   db: true

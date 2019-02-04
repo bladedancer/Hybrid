@@ -30,7 +30,7 @@
 			"env"
 		]
 	},
-	"start": "gm-code.1",
+	"start": "Ground.1",
 	"nodes": {
 		"GoogleCloudTranslate.1": {
 			"type": "nodehandler://@axway/api-builder-plugin-fn-swagger/GoogleCloudTranslate",
@@ -71,27 +71,6 @@
 						"condition.1"
 					],
 					"context": "$.error"
-				}
-			}
-		},
-		"setcontext.1": {
-			"type": "nodehandler://axway-flow/setcontext",
-			"name": "Todo: Locale",
-			"method": "setcontext",
-			"parameters": [
-				{
-					"name": "value",
-					"type": "string",
-					"value": "\"fr\""
-				}
-			],
-			"outputs": {
-				"next": {
-					"context": "$.locale",
-					"routes": [
-						"GoogleCloudTranslate.1",
-						"GoogleCloudTranslate.2"
-					]
 				}
 			}
 		},
@@ -176,7 +155,7 @@
 				{
 					"name": "body",
 					"type": "jsonpath",
-					"value": "$.error.message"
+					"value": "$.error"
 				}
 			],
 			"outputs": {
@@ -242,31 +221,31 @@
 		},
 		"gm-code.1": {
 			"type": "nodehandler://@bladedancer/api-builder-plugin-gm-code/gm-code",
-			"name": "Execute",
+			"name": "Log",
 			"method": "execute",
 			"parameters": [
 				{
 					"name": "inputs",
 					"type": "jsonpath",
-					"value": "$.config.demo.gmail.key"
+					"value": "$.to"
 				},
 				{
 					"name": "function",
 					"type": "string",
-					"value": "\"(ctx) => {\\nconsole.log(\\\"!!!!!!!!!!!!!\\\");\\nconsole.log(ctx);\\n}\""
+					"value": "\"(res) => {\\nconsole.log(JSON.stringify(res));\\n}\""
 				}
 			],
 			"outputs": {
 				"next": {
 					"context": "$.return",
 					"routes": [
-						"setcontext.2"
+						"condition.2"
 					]
 				},
 				"error": {
 					"context": "$.error",
 					"routes": [
-						"setcontext.2"
+						"condition.2"
 					]
 				}
 			}
@@ -297,26 +276,6 @@
 					"context": "$.emailmessage",
 					"routes": [
 						"Gmail.1"
-					]
-				}
-			}
-		},
-		"setcontext.2": {
-			"type": "nodehandler://axway-flow/setcontext",
-			"name": "Todo: Recipient",
-			"method": "setcontext",
-			"parameters": [
-				{
-					"name": "value",
-					"type": "string",
-					"value": "\"gmatthews@axway.com\""
-				}
-			],
-			"outputs": {
-				"next": {
-					"context": "$.recipient",
-					"routes": [
-						"setcontext.1"
 					]
 				}
 			}
@@ -364,6 +323,203 @@
 					"value": "gmail"
 				}
 			]
+		},
+		"Ground.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-swagger/Ground",
+			"name": "getAddressbookContact",
+			"method": "getAddressbookContact",
+			"parameters": [
+				{
+					"name": "firstname",
+					"type": "jsonpath",
+					"value": "$.params.recipient"
+				}
+			],
+			"outputs": {
+				"200": {
+					"context": "$.to",
+					"routes": [
+						"gm-code.1"
+					]
+				},
+				"default": {
+					"context": "$.error",
+					"routes": [
+						"gm-code.3"
+					]
+				},
+				"error": {
+					"context": "$.error",
+					"routes": [
+						"gm-code.3"
+					]
+				}
+			}
+		},
+		"gm-code.3": {
+			"type": "nodehandler://@bladedancer/api-builder-plugin-gm-code/gm-code",
+			"name": "Ground Error",
+			"method": "execute",
+			"parameters": [
+				{
+					"name": "inputs",
+					"type": "jsonpath",
+					"value": "$.grounderror"
+				},
+				{
+					"name": "function",
+					"type": "string",
+					"value": "\"(err) => {\\nconsole.error(err.message || err)\\n}\""
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.return",
+					"routes": [
+						"setcontext.3"
+					]
+				},
+				"error": {
+					"context": "$.error",
+					"routes": [
+						"setcontext.3"
+					]
+				}
+			}
+		},
+		"setcontext.3": {
+			"type": "nodehandler://axway-flow/setcontext",
+			"name": "Default Recipient",
+			"method": "setcontext",
+			"parameters": [
+				{
+					"name": "value",
+					"type": "string",
+					"value": "\"axway.demo.bolger@gmail.com\""
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.recipient",
+					"routes": [
+						"setcontext.4"
+					]
+				}
+			}
+		},
+		"setcontext.4": {
+			"type": "nodehandler://axway-flow/setcontext",
+			"name": "Default Locale",
+			"method": "setcontext",
+			"parameters": [
+				{
+					"name": "value",
+					"type": "string",
+					"value": "\"fr\""
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.locale",
+					"routes": [
+						"GoogleCloudTranslate.1",
+						"GoogleCloudTranslate.2"
+					]
+				}
+			}
+		},
+		"setcontext.5": {
+			"type": "nodehandler://axway-flow/setcontext",
+			"name": "Recipient",
+			"method": "setcontext",
+			"parameters": [
+				{
+					"name": "value",
+					"type": "jsonpath",
+					"value": "$.to.data[0].email"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.recipient",
+					"routes": [
+						"condition.3"
+					]
+				}
+			}
+		},
+		"setcontext.6": {
+			"type": "nodehandler://axway-flow/setcontext",
+			"name": "Locale",
+			"method": "setcontext",
+			"parameters": [
+				{
+					"name": "value",
+					"type": "jsonpath",
+					"value": "$.to.data[0].address.country"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.locale",
+					"routes": [
+						"GoogleCloudTranslate.1",
+						"GoogleCloudTranslate.2"
+					]
+				}
+			}
+		},
+		"condition.2": {
+			"type": "nodehandler://axway-flow/condition",
+			"name": "Recipient Exists",
+			"method": "exists",
+			"parameters": [
+				{
+					"name": "source",
+					"type": "jsonpath",
+					"value": "$.to.data[0].email"
+				}
+			],
+			"outputs": {
+				"true": {
+					"routes": [
+						"setcontext.5"
+					],
+					"context": "$.exists"
+				},
+				"false": {
+					"routes": [
+						"setcontext.3"
+					],
+					"context": "$.exists"
+				}
+			}
+		},
+		"condition.3": {
+			"type": "nodehandler://axway-flow/condition",
+			"name": "Locale Exists",
+			"method": "exists",
+			"parameters": [
+				{
+					"name": "source",
+					"type": "jsonpath",
+					"value": "$.to.data[0].address.country"
+				}
+			],
+			"outputs": {
+				"true": {
+					"routes": [
+						"setcontext.6"
+					],
+					"context": "$.exists"
+				},
+				"false": {
+					"routes": [
+						"setcontext.4"
+					],
+					"context": "$.exists"
+				}
+			}
 		}
 	}
 }

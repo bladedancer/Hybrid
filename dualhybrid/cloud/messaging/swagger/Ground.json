@@ -1,0 +1,100 @@
+{
+  "schemes": [
+    "http"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "An API Builder service",
+    "title": "addressbook",
+    "version": "1.0.0"
+  },
+  "host": "addressbook.ground.svc.cluster.local:80",
+  "basePath": "/api",
+  "paths": {
+    "/addressbook/contact": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Find contacts",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The contacts firstname.",
+            "name": "firstname",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "The contacts surname.",
+            "name": "surname",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "The users email address.",
+            "name": "email",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The contacts found",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/contact"
+              }
+            }
+          },
+          "default": {
+            "description": "The default response."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "address": {
+      "description": "An address",
+      "type": "object",
+      "title": "address",
+      "properties": {
+        "city": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "street": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "string"
+        }
+      }
+    },
+    "contact": {
+      "description": "Contact",
+      "type": "object",
+      "title": "contact",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/address"
+        },
+        "email": {
+          "type": "string"
+        },
+        "firstname": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
