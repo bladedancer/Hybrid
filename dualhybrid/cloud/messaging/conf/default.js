@@ -40,7 +40,7 @@ module.exports = {
 	timeout: 120000,
 
 	// Log level of the main logger. Can be set to 'debug', 'error', 'fatal', 'info', 'trace', or 'warn'.
-	logLevel: 'debug',
+	logLevel: 'trace',
 
 	// Prefix to use for APIs, access to which is governed via `accessControl`.
 	apiPrefix: '/api',
@@ -183,6 +183,17 @@ module.exports = {
 	authorization: {
 		callback: '/auth/callback',
 		credentials: {
+			gmail: { 
+				type: 'oauth2',
+				flow: 'code',
+				authentication_url: 'https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent',
+				token_url: 'https://accounts.google.com/o/oauth2/token',
+				access_token: null,
+				refresh_token: process.env.GMAIL_TOKEN,
+				client_id: process.env.GMAIL_CLIENT_ID,
+				client_secret: process.env.GMAIL_CLIENT_SECRET,
+				scope: 'https://mail.google.com/'
+			}
 		}
 	}
 };

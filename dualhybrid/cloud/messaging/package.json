@@ -17,12 +17,14 @@
 	"repository": {},
 	"private": true,
 	"dependencies": {
-		"@axway/api-builder-runtime": "^4.6.0",
 		"@axway/api-builder-plugin-fn-base64": "^1.0.0",
 		"@axway/api-builder-plugin-fn-dot": "^1.0.0",
 		"@axway/api-builder-plugin-fn-json": "^1.0.0",
 		"@axway/api-builder-plugin-fn-restclient": "^1.0.0",
-		"@axway/api-builder-plugin-fn-swagger": "^2.0.0"
+		"@axway/api-builder-plugin-fn-swagger": "^2.0.0",
+		"@axway/api-builder-runtime": "^4.6.0",
+		"@bladedancer/api-builder-plugin-gm-code": "^1.0.2",
+		"@bladedancer/api-builder-plugin-gm-gmailutils": "^1.0.0"
 	},
 	"devDependencies": {
 		"@axway/api-builder-admin": "^1.5.0",

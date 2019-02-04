@@ -1,51 +1,83 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "title": "Messaging API",
-      "version": "1.0",
-      "description": "A cloud based messaging service that interacts with the on-prem services."
-    },
-    "host": "example.com",
-    "paths": {
-      "/send": {
-        "post": {
-          "responses": {
-            "200": {
-              "description": "Returns the message.",
-              "schema": {
-                "$ref": "#/definitions/message"
-              }
-            },
-            "default": {
-              "description": "Dedault Response."
+  "swagger": "2.0",
+  "info": {
+    "title": "Messaging API",
+    "version": "1.0",
+    "description": "A cloud based messaging service that interacts with the on-prem services."
+  },
+  "host": "example.com",
+  "paths": {
+    "/send/{recipient}": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Returns the message.",
+            "schema": {
+              "$ref": "#/definitions/message"
             }
           },
-          "operationId": "Send Message",
-          "consumes": [
-            "application/json"
-          ],
-          "produces": [
-            "application/json"
-          ]
-        }
-      }
-    },
-    "basePath": "/msg",
-    "definitions": {
-      "message": {
-        "type": "object",
-        "title": "Message",
-        "properties": {
-          "recipient": {
-            "type": "string"
-          },
-          "sender": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
+          "default": {
+            "description": "Default Response."
           }
+        },
+        "operationId": "Send Message",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recipient",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "subject": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "x-flow": "messaging-Send Message"
+      },
+      "parameters": [
+        {
+          "name": "recipient",
+          "in": "path",
+          "type": "string",
+          "required": true
+        }
+      ]
+    }
+  },
+  "basePath": "/msg",
+  "definitions": {
+    "message": {
+      "type": "object",
+      "title": "Message",
+      "properties": {
+        "recipient": {
+          "type": "string"
+        },
+        "sender": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
         }
       }
     }
   }
+}
