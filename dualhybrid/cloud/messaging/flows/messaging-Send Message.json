@@ -456,7 +456,7 @@
 				{
 					"name": "value",
 					"type": "jsonpath",
-					"value": "$.to.data[0].address.country"
+					"value": "$.to.data[0].locale"
 				}
 			],
 			"outputs": {
@@ -503,7 +503,7 @@
 				{
 					"name": "source",
 					"type": "jsonpath",
-					"value": "$.to.data[0].address.country"
+					"value": "$.to.data[0].locale"
 				}
 			],
 			"outputs": {
