@@ -1,0 +1,38 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Slow API.",
+    "version": "1.0.0",
+    "title": "Delay API"
+  },
+  "paths": {
+    "/wait": {
+      "get": {
+        "description": "Wait for the specified number of milliseconds",
+        "operationId": "Wait",
+        "parameters": [
+          {
+            "description": "The delay in milliseconds.",
+            "in": "query",
+            "name": "delay",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "greeting"
+          },
+          "400": {
+            "description": "bad request"
+          }
+        },
+        "summary": "Wait a bit",
+        "x-flow": "Delay-Wait"
+      }
+    }
+  }
+}
