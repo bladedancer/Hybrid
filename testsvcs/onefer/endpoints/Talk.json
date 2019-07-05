@@ -1,0 +1,51 @@
+{
+	"x-enabled": {
+		"enabled": true
+	},
+	"swagger": "2.0",
+	"info": {
+		"description": "Talk stuff",
+		"version": "1.0.0",
+		"title": "Talk API"
+	},
+	"basePath": "/talk",
+	"paths": {
+		"/welcome": {
+			"get": {
+				"x-flow": "WelcomeFlow",
+				"description": "",
+				"operationId": "Welcome",
+				"parameters": [
+					{
+						"description": "The username",
+						"in": "query",
+						"name": "username",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "welcome",
+						"schema": {
+							"$ref": "schema:///schema/onefer/message"
+						}
+					},
+					"400": {
+						"description": "bad request",
+						"schema": {
+							"$ref": "schema:///schema/onefer/error"
+						}
+					}
+				},
+				"summary": "Welcome a user",
+				"tags": [
+					"helloworld"
+				]
+			}
+		}
+	}
+}
