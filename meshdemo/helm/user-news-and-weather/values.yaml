@@ -1,0 +1,29 @@
+# As this is a single pod solution the scaling is linear, 
+# each pod will have 1 user news and weather service, 1 news service
+# and 1 weather service.
+replicaCount: 1
+
+usernewsandweather:
+  apikey: mykey
+
+news:
+  apikey: newskey
+  # The API key for NewsAPI.org
+  backendKey: yourNewsAPIOrgKey
+
+weather:
+  apikey: weatherkey
+  # The API Key for OpenWeatherMap.org
+  backendKey: yourOpenWeatherMapKey
+
+# Configure deployment in a service mesh
+serviceMesh:
+  istio: false
+
+# The images to use for the containers. If you built with different
+# naming then you can change these here.
+image:
+  weather: bladedancer/api-builder-demo-services:weather-service
+  news: bladedancer/api-builder-demo-services:news-service
+  userNewsAndWeather: bladedancer/api-builder-demo-services:user-news-and-weather
+  pullPolicy: IfNotPresent

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather
+  namespace: {{.Release.Namespace}}
+  labels:
+    app: {{ .Chart.Name }}-weather
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-weather
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-weather
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: weather
+          image: "{{ .Values.image.weather }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: PORT
+              value: "8080"
+            - name: APIKEY
+              value: "{{ .Values.weather.apikey }}"
+            - name: OPENWEATHER_APIKEY
+              value: {{ .Values.weather.backendKey }}
+          livenessProbe:
+            httpGet:
+              path: /apibuilderPing.json
+              port: 8080
+          {{if eq .Values.serviceMesh.istio false}}
+          readinessProbe:
+            httpGet:
+              path: /apibuilderPing.json
+              port: 8080
+          {{end}}

@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-news-and-weather
+  namespace: {{.Release.Namespace}}
+  labels:
+    app: {{ .Chart.Name }}-user-news-and-weather
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-user-news-and-weather
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-user-news-and-weather
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: usernewsandweather
+          image: "{{ .Values.image.userNewsAndWeather }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: PORT
+              value: "8080"
+            - name: APIKEY
+              value: "{{ .Values.usernewsandweather.apikey }}"
+            - name: NEWS_HOST
+              value: "news.{{ .Release.Namespace }}.svc"
+            - name: NEWS_PORT
+              value: "8080"
+            - name: NEWS_SERVICE_APIKEY
+              value: "{{ .Values.news.apikey }}"
+            - name: WEATHER_HOST
+              value: "weather.{{ .Release.Namespace }}.svc"
+            - name: WEATHER_PORT
+              value: "8080"
+            - name: WEATHER_SERVICE_APIKEY
+              value: "{{ .Values.weather.apikey }}"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /apibuilderPing.json
+              port: 8080
+          {{if eq .Values.serviceMesh.istio false}}
+          readinessProbe:
+            httpGet:
+              path: /apibuilderPing.json
+              port: 8080
+          {{end}}

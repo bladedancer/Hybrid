@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: news
+  namespace: {{.Release.Namespace}}
+  labels:
+    app: {{ .Chart.Name }}-news
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-news
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-news
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: news
+          image: "{{ .Values.image.news }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: PORT
+              value: "8080"
+            - name: APIKEY
+              value: "{{ .Values.news.apikey }}"
+            - name: NEWSAPI_APIKEY
+              value: {{ .Values.news.backendKey }}
+          livenessProbe:
+            httpGet:
+              path: /apibuilderPing.json
+              port: 8080
+          {{if eq .Values.serviceMesh.istio false}}
+          readinessProbe:
+            httpGet:
+              path: /apibuilderPing.json
+              port: 8080
+          {{end}}
+
