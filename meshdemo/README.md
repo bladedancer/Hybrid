@@ -11,6 +11,8 @@ This example uses k3d to create the cluster. It can be done equally well with mi
 
 This script creates the cluster, installs helm and loads in the images the demo will use.
 
+*NOTE*: our istio deploy doesn't work with this version of k8s...you can install it manually but it's a pain.
+
 ### Connecting to AMPLIFY Central
 
 For convenience this setup is creating a self-signed key for the central cluster and pregenerate keys for SDA and CSA agents. In production you should follow the steps in: https://docs.axway.com/bundle/axway-open-docs/page/docs/central/add_hybrid_env/index.html
@@ -40,7 +42,6 @@ api.openweathermap.org:443
 
 
 ### Testing
-
 
 #### Registration
 ```
@@ -78,3 +79,22 @@ e.g.
 curl --insecure --location --user mykey: --request GET 'https://meshdemo.apicentral-hybrid.axwaytest.net:443/api/unw-brief/fred/info'
 ```
 
+
+## Kiali
+
+Install Kiali 
+
+```
+bash <(curl -L https://git.io/getLatestKialiOperator)
+```
+
+Port forward it is the simplest option:
+
+```
+kubectl -n istio-system port-forward svc/kiali 20001
+```
+
+And open the console:
+```
+https://localhost:20001/
+```

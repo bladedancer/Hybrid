@@ -39,3 +39,8 @@ helm upgrade --install --namespace apic-control apic-hybrid axway/apicentral-hyb
 
 kubectl get services -n apic-control
 kubectl get services -n apic-demo
+
+echo =======================
+echo Installing Kiali
+echo =======================
+bash <(curl -L https://git.io/getLatestKialiOperator)
