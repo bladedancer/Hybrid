@@ -1,0 +1,26 @@
+{
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": {
+        "annotations": {
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Namespace\",\"metadata\":{\"annotations\":{},\"labels\":{\"app\":\"kiali-operator\",\"version\":\"v1.13.1\"},\"name\":\"kiali-operator\"}}\n"
+        },
+        "creationTimestamp": "2020-02-13T17:38:45Z",
+        "deletionTimestamp": "2020-02-13T17:46:35Z",
+        "labels": {
+            "app": "kiali-operator",
+            "version": "v1.13.1"
+        },
+        "name": "kiali-operator",
+        "resourceVersion": "30121",
+        "selfLink": "/api/v1/namespaces/kiali-operator",
+        "uid": "2ec69e73-fb7a-4486-89f5-5814c410103b"
+    },
+    "spec": {
+        "finalizers": [
+        ]
+    },
+    "status": {
+        "phase": "Terminating"
+    }
+}

@@ -26,11 +26,28 @@ DOMAIN=$(grep external-dns.alpha.kubernetes.io/hostname override/istioOverride.y
 ./mesh-prepare.sh ${SECRET_NAME} ${DOMAIN}
 
 echo =======================
+echo Kiali Secret- demo:password
+echo =======================
+cat <<EOF | kubectl -n istio-system apply -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kiali
+  namespace: $NAMESPACE
+  labels:
+    app: kiali
+type: Opaque
+data:
+  passphrase: cGFzc3dvcmQ=
+  username: ZGVtbw==
+EOF
+
+echo =======================
 echo Installing Istio
 echo =======================
 helm repo up
 helm upgrade --install --namespace istio-system istio axway/istio-init
-helm upgrade --install --namespace istio-system istio axway/istio -f ./override/istioOverride.yaml
+helm upgrade --install --namespace istio-system istio axway/istio -f ./override/istioOverride.yaml --set grafana.enabled=true
 
 echo =======================
 echo Installing Agents
@@ -39,8 +56,3 @@ helm upgrade --install --namespace apic-control apic-hybrid axway/apicentral-hyb
 
 kubectl get services -n apic-control
 kubectl get services -n apic-demo
-
-echo =======================
-echo Installing Kiali
-echo =======================
-bash <(curl -L https://git.io/getLatestKialiOperator)

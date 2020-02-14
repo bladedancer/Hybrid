@@ -14,12 +14,12 @@ LOCATION+=('"city":"Boston", "country":"US"')
 LOCATION+=('"city":"Dallas", "country":"US"')
 
 INTEREST=(\
-    "business", \
-    "entertainment", \
-    "general", \
-    "health", \
-    "science", \
-    "sports", \
+    "business" \
+    "entertainment" \
+    "general" \
+    "health" \
+    "science" \
+    "sports" \
     "technology" \
 )
 
@@ -36,13 +36,13 @@ while [ 1 ]; do
     user="test_$(date +%s%N | cut -b1-13)"
     
     # Create the user
-    echo curl --insecure --location --request POST "$URL/register" \
+    curl --insecure --location --request POST "$URL/register" \
         --user mykey: \
         --header 'Content-Type: application/json' \
         --data-raw "{\"uid\": \"$user\", $loc, \"interest\": \"$cat\"}"
 
     # Get the info
-    curl --insecure --location --user mykey: --request GET "$URL/fred/info"
-
+    curl --insecure --location --user mykey: --request GET "$URL/$user/info"
+    echo
     sleep 0.01
 done

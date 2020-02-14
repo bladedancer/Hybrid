@@ -8,13 +8,13 @@ if [ -z $SECRET_NAME ]; then
   exit -1
 fi;
 
-rm -rf central
 mkdir central
 
-if [ ! -f "./central/server.key" ]; then
-  ./generate-cert.sh ${DOMAIN}
+if [ -f "./certs/${DOMAIN}.key" ]; then
+  cp ./certs/${DOMAIN}.key central/server.key
+  cp ./certs/${DOMAIN}.crt central/server.crt
 else
-  echo "Using pre-existing certs."
+  ./generate-cert.sh ${DOMAIN}
 fi
 
 ./generate-agent-keys.sh

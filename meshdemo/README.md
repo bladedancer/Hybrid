@@ -82,7 +82,7 @@ curl --insecure --location --user mykey: --request GET 'https://meshdemo.apicent
 
 ## Kiali
 
-Install Kiali 
+Install Kiali (had issues with the Istio built in support so manually install for now).
 
 ```
 bash <(curl -L https://git.io/getLatestKialiOperator)
@@ -98,3 +98,6 @@ And open the console:
 ```
 https://localhost:20001/
 ```
+
+## Prometheus
+kubectl -n istio-system port-forward svc/prometheus 9090
