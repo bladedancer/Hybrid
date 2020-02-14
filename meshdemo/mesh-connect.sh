@@ -47,7 +47,9 @@ echo Installing Istio
 echo =======================
 helm repo up
 helm upgrade --install --namespace istio-system istio axway/istio-init
-helm upgrade --install --namespace istio-system istio axway/istio -f ./override/istioOverride.yaml --set grafana.enabled=true
+sleep 30
+helm upgrade --install --namespace istio-system istio axway/istio -f ./override/istioOverride.yaml 
+#--set grafana.enabled=true --set tracing.enabled=true
 
 echo =======================
 echo Installing Agents

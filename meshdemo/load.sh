@@ -34,6 +34,7 @@ while [ 1 ]; do
     cat=${INTEREST[$index]}
 
     user="test_$(date +%s%N | cut -b1-13)"
+    #user="test_$(date +%s)"
     
     # Create the user
     curl --insecure --location --request POST "$URL/register" \

@@ -100,4 +100,7 @@ https://localhost:20001/
 ```
 
 ## Prometheus
-kubectl -n istio-system port-forward svc/prometheus 9090
+kubectl -n istio-system port-forward --address 0.0.0.0 svc/prometheus 9090
+
+## Jaeger
+kubectl -n istio-system port-forward --address 0.0.0.0 svc/tracing 18080:80
