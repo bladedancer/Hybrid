@@ -16,10 +16,6 @@ weather:
   # The API Key for OpenWeatherMap.org
   backendKey: yourOpenWeatherMapKey
 
-# Configure deployment in a service mesh
-serviceMesh:
-  istio: false
-
 # The images to use for the containers. If you built with different
 # naming then you can change these here.
 image:

@@ -49,9 +49,7 @@ spec:
             httpGet:
               path: /apibuilderPing.json
               port: 8080
-          {{if eq .Values.serviceMesh.istio false}}
           readinessProbe:
             httpGet:
               path: /apibuilderPing.json
               port: 8080
-          {{end}}
