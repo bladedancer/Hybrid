@@ -17,7 +17,7 @@
 	"repository": {},
 	"private": true,
 	"dependencies": {
-		"@axway/api-builder-runtime": "^4.5.0",
+		"@axway/api-builder-runtime": "^4.94.1",
 		"@axway/api-builder-plugin-fn-base64": "^1.0.0",
 		"@axway/api-builder-plugin-fn-dot": "^1.0.0",
 		"@axway/api-builder-plugin-fn-json": "^1.0.0",
